@@ -1,0 +1,10 @@
+#ini untuk identifikasi dia termasuk key apa
+#misal pada kalimat: "klender_baru dari jakarta_kota"
+#pada klender_baru tidak terdapat keyword, sehingga somehow
+#perlu untuk ditebak apa keyword yang tepat
+#inilah kegunaan dari file ini, untuk menunjukkan relasi
+#antar keyword tempat
+dari ke
+ke dari
+menuju dari
+menuju_ke dari
