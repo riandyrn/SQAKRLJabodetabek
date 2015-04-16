@@ -11,6 +11,7 @@ public class Main {
 	
 	static ConfigurationManager cm;
 	static Recognizer recognizer;
+	private static final String RESOURCE_PATH = "/com/sqakrljabodetabek/resources/";
 	
 	public static void main(String[] args) {
 		
@@ -21,13 +22,13 @@ public class Main {
 		
 		
 		initConfig("transcriber_ina.xml");
-		transcribeAudio("test_continous_speech_riandy_1.wav");
+		transcribeAudio("test_stations_not_in_lm.wav");
 		
 	}
 	
 	public static void initConfig(String config_filename)
 	{
-		cm = new ConfigurationManager(Main.class.getResource("/configs/" + config_filename));
+		cm = new ConfigurationManager(Main.class.getResource(RESOURCE_PATH + "configs/" + config_filename));
 		
 		// allocate the recognizer
         System.out.println("Loading...");
@@ -62,7 +63,7 @@ public class Main {
 	
     public static void transcribeAudio(String filename)
     {
-        URL audioURL = Main.class.getResource("/resources/" + filename);
+        URL audioURL = Main.class.getResource(RESOURCE_PATH + "resources/" + filename);
         
         AudioFileDataSource dataSource = (AudioFileDataSource) cm.lookup("audioFileDataSource");
         dataSource.setAudioFile(audioURL, null);

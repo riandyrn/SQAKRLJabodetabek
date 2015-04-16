@@ -1,7 +1,9 @@
 package com.sqakrljabodetabek.modules;
+import java.io.BufferedInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import com.sqakrljabodetabek.language_analysis_things.Frame;
 import com.sqakrljabodetabek.language_analysis_things.Slot;
@@ -21,6 +23,8 @@ public class DialogueManager {
 			
 	private final String LIST_JADWAL_IDENTIFIER_KEY = "list_jadwal_identifier";
 	private final String TIME_MODIFIER_KEY = "time_modifier";
+	private final String PLACE_IDENTIFIER_ORIGIN_KEY = "dari";
+	private final String PLACE_IDENTIFIER_DESTINATION_KEY = "ke";
 	
 	private final String START_STATION_FRAME_IDENTIFIER = "dari";
 	private final String END_STATION_FRAME_IDENTIFIER = "ke";
@@ -29,12 +33,14 @@ public class DialogueManager {
 	private final String TIME_MOST_EARLY_VALUE_IDENTIFIER = "paling_awal";
 	private final String TIME_MOST_LATE_VALUE_IDENTIFIER = "paling_akhir";
 	
-	private final String SCHEDULE_VALUE_IDENTIFIER = "kapan_saja";
+	private final String SCHEDULE_VALUE_IDENTIFIER = "jadwal";
 	
 	private SpeechRecognizer speechRecognizer;
 	private LanguageUnderstanding languageUnderstanding;
 	private RouteResolver routeResolver;
 	private ScheduleResolver scheduleResolver;
+	
+	private final String RESOURCE_PATH = "/com/sqakrljabodetabek/scenario_files/";
 
 	public DialogueManager()
 	{
@@ -42,60 +48,25 @@ public class DialogueManager {
 		constructReferenceFrames();
 	}
 	
-	public void run()
+	public DialogueManager(boolean isTranscribeFile)
 	{
-		/*
-		 * fungsi ini yang akan melakukan eksekusi
-		 * dari program
-		 */
-		
-		welcomingUser();
-		
-		while(true)
-		{
-			System.out.print("> ");
-			String recognized_sentence = speechRecognizer.listen();
-			if(recognized_sentence.length() > 0)
-			{
-				System.out.println(recognized_sentence);
-				Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
-				Frame.printFrame(recognized_frame);
-				this.fillContextFrame(recognized_frame);
-				System.out.println(isContextFrameComplete());
-				if(isContextFrameComplete())
-				{
-					doAppropriateAction();
-					System.out.println();
-					destroyContextFrame();
-				}
-			}
-		}
+		initModules(isTranscribeFile);
+		constructReferenceFrames();
 	}
 	
-	public void runTranscriber(String filename)
+	private String getFirstEmptyAttributeKeyInContextFrame() 
 	{
-		/*
-		 * fungsi ini yang akan melakukan eksekusi
-		 * dari program
-		 */
-		
-		//welcomingUser();
-		
-		System.out.print("> ");
-		String recognized_sentence = speechRecognizer.transcribeAudio(filename);
-		if(recognized_sentence.length() > 0)
+		String ret = "";
+		ArrayList<String> keys = context_frame.getKeys();
+		for(String key: keys)
 		{
-			System.out.println(recognized_sentence);
-			Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
-			Frame.printFrame(recognized_frame);
-			this.fillContextFrame(recognized_frame);
-			if(isContextFrameComplete())
+			if(context_frame.getValue(key).isEmpty())
 			{
-				doAppropriateAction();
-				System.out.println();
-				destroyContextFrame();
+				ret = key;
 			}
 		}
+		
+		return ret;
 	}
 	
 	private void printString(String string)
@@ -112,7 +83,7 @@ public class DialogueManager {
 		
 		if(context_frame_category.equals(TIME_ASKING_CATEGORY))
 		{
-			System.out.println("TIME_ASKING");
+			//System.out.println("TIME_ASKING");
 			String time_modifier = context_frame.getValue(TIME_MODIFIER_KEY);
 			if(time_modifier.equals(TIME_MOST_LATE_VALUE_IDENTIFIER))
 			{
@@ -138,7 +109,7 @@ public class DialogueManager {
 		}
 		else
 		{
-			System.out.println("ROUTE_ASKING");
+			//System.out.println("ROUTE_ASKING");
 			printString(routeResolver.resolveRoute(start_station, end_station));
 		}
 		
@@ -160,9 +131,11 @@ public class DialogueManager {
 		
 		String welcome_message = "Layanan informasi yang bisa ditanyakan: \n"
 									+ "-Kereta dari <stasiun> ke <stasiun> \n"
-									+ "-Kereta <selanjutnya | paling pagi | paling malam>";
+									+ "-Kereta <selanjutnya | paling pagi | paling akhir> dari <place> ke <place> \n"
+									+ "-Jadwal kereta dari <stasiun> ke <stasiun>";
 		
 		System.out.println(welcome_message);
+		System.out.println();
 	}
 	
 	private void cls()
@@ -179,10 +152,18 @@ public class DialogueManager {
 	
 	private void initModules()
 	{
-		speechRecognizer = new SpeechRecognizer(true); //ganti line ini kalo mau pake microphone
+		speechRecognizer = new SpeechRecognizer(false); //ini buat input pake mikrofon
 		languageUnderstanding = new LanguageUnderstanding();
 		routeResolver = new RouteResolver();
 		scheduleResolver = new ScheduleResolver();
+	}
+	
+	private void initModules(boolean isTranscribeAudioFile)
+	{
+		speechRecognizer = new SpeechRecognizer(isTranscribeAudioFile); //ini untuk transcribe audio file
+		languageUnderstanding = new LanguageUnderstanding();
+		routeResolver = new RouteResolver();
+		scheduleResolver = new ScheduleResolver();		
 	}
 	
 	private void constructReferenceFrames()
@@ -214,8 +195,11 @@ public class DialogueManager {
 		{
 			context_frame = getMostAppropriateFrameTemplate(frame);
 		}
-
-		fillInformationToContextFrame(frame);
+		
+		if(context_frame != null)
+		{
+			fillInformationToContextFrame(frame);
+		}
 	}
 	
 	private Frame getMostAppropriateFrameTemplate(Frame frame) 
@@ -231,7 +215,7 @@ public class DialogueManager {
 		{
 			ret = schedule_asking;
 		}
-		else
+		else if(keys.contains(PLACE_IDENTIFIER_DESTINATION_KEY) || keys.contains(PLACE_IDENTIFIER_ORIGIN_KEY))
 		{
 			ret = route_asking;
 		}
@@ -272,6 +256,7 @@ public class DialogueManager {
 	public void destroyContextFrame()
 	{
 		context_frame = null;
+		constructReferenceFrames();
 	}
 	
 	private void constructFrameScheduleAsking() 
@@ -300,12 +285,136 @@ public class DialogueManager {
 		
 		return ret;
 	}
+	
+	public void run()
+	{
+		/*
+		 * fungsi ini yang akan melakukan eksekusi
+		 * dari program
+		 */
+		
+		boolean isBlank = false;
+		welcomingUser();
+		
+		while(true)
+		{
+			if(!isBlank) 
+			{
+				System.out.print("> ");			
+			}
+			
+			String recognized_sentence = speechRecognizer.listen();
+			if(recognized_sentence.length() > 0)
+			{
+				executeDMBehavior(recognized_sentence);
+				isBlank = false;
+			}
+			else
+			{
+				isBlank = true;
+			}
+		}
+	}
+	
+	private void executeDMBehavior(String recognized_sentence)
+	{
+		/*
+		 * Prosedur ini berisi behavior dari komponen DM
+		 * atau dalam kata lain berisi algoritma penanganan
+		 * teks yang diterima oleh sistem hingga pemrosesan
+		 * query dari teks tersebut
+		 * 
+		 * Dengan adanya prosedur ini diharapkan bisa
+		 * memperpendek penulisan utk fitur running
+		 * skenario dari file
+		 */
+		
+		System.out.println(recognized_sentence);
+		Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
+		Frame.printFrame(recognized_frame);
+		this.fillContextFrame(recognized_frame);
+		
+		if(context_frame != null)
+		{
+			if(isContextFrameComplete())
+			{
+				doAppropriateAction();
+				System.out.println();
+				destroyContextFrame();
+			}
+			else
+			{
+				String response = AnswerGenerator.handleMissingInformation(getFirstEmptyAttributeKeyInContextFrame());
+				System.out.println(response);
+			}
+		}
+		else
+		{
+			String response = AnswerGenerator.handleNullContextFrame();
+			System.out.println(response);
+		}
+	}
 
+	public void runScenario(String filename)
+	{
+		ArrayList<String> sentences = CommonHelper.loadTextFile(RESOURCE_PATH, filename);
+		
+		welcomingUser();
+		
+		for(String sentence: sentences)
+		{
+			System.out.print("> ");
+			executeDMBehavior(sentence);
+		}
+	}
+	
+	public void runScenarioFromInput()
+	{
+		Scanner stdin = new Scanner(new BufferedInputStream(System.in));
+		
+		while(true)
+		{
+			System.out.print("Masukkan nama file skenario: ");
+			runScenario(stdin.next());
+		}
+		
+	}
+	
+	public void runTranscriber(String continous_audio_filename)
+	{
+		/*
+		 * fungsi ini yang akan melakukan eksekusi
+		 * dari program
+		 */
+		
+		//welcomingUser();
+		
+		ArrayList<String> sentences = speechRecognizer.transcribeAudio(continous_audio_filename);
+		
+		welcomingUser();
+		
+		for(String sentence: sentences)
+		{
+			System.out.print("> ");
+			executeDMBehavior(sentence);
+		}
+	}
+	
 	public static void main(String[] args) 
 	{
-		DialogueManager dm = new DialogueManager();
-		dm.runTranscriber("test_asr_1/1.wav");
-		dm.runTranscriber("test_asr_1/9.wav");
+		/*	UNTUK MIKROFON dan SKENARIO
+			DialogueManager dm = new DialogueManager(false);
+			dm.run();
+			dm.runScenario("scenario_1");
+			dm.runScenarioFromInput();
+		 */
+		
+		/* UNTUK FILE AUDIO
+		*/
+		DialogueManager dm = new DialogueManager(true);
+		dm.runTranscriber("skenario_rute.wav");
+		//dm.runTranscriber("skenario_jadwal.wav");
+		
 	}
 
 }

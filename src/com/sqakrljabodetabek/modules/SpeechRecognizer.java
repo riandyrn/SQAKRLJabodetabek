@@ -1,6 +1,7 @@
 package com.sqakrljabodetabek.modules;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 import edu.cmu.sphinx.frontend.util.AudioFileDataSource;
 import edu.cmu.sphinx.frontend.util.Microphone;
@@ -45,53 +46,65 @@ public class SpeechRecognizer {
 	public String listen()
 	{
 		Microphone microphone = (Microphone) cm.lookup("microphone");
+		
 		microphone.startRecording();
-
+		
         Result result = recognizer.recognize();
-        String resultText;
+        String resultText = "";
         
         if (result != null) {
-            resultText = result.getBestFinalResultNoFiller();
+            resultText = result.getBestResultNoFiller();
         } else {
             resultText = "Mohon maaf, saya tidak mendengar apa yang Anda katakan";
         }
-
+        
         return resultText;
 	}
 	
-    public String transcribeAudio(String filename)
+    public ArrayList<String> transcribeAudio(String filename)
     {
         URL audioURL = getClass().getResource(RESOURCE_PATH + "resources/" + filename);
         
         AudioFileDataSource dataSource = (AudioFileDataSource) cm.lookup("audioFileDataSource");
         dataSource.setAudioFile(audioURL, null);
         
+        ArrayList<String> ret = new ArrayList<>();
         Result result;
-        String resultText = "";
+        String resultText;
         
         while((result = recognizer.recognize()) != null)
         {
         	resultText = result.getBestFinalResultNoFiller();
-        	System.out.println(resultText);
+        	
+        	if(!resultText.isEmpty())
+        	{
+        		//System.out.println(resultText);
+        		ret.add(resultText);
+        	}
         }
         
-        return resultText;
+        return ret;
         
     }
     
 	public static void main(String[] args) {
 		
-		SpeechRecognizer recognizer = new SpeechRecognizer();
-		System.out.println("Silakan mulai berbicara");
+		SpeechRecognizer recognizer = new SpeechRecognizer(true);
+		/*System.out.println("Silakan mulai berbicara");
 		while(true)
 		{
 			String result = recognizer.listen();
 			
-			if(result.length() > 0)
+			if(result != null)
 			{
-				System.out.println(result);
+				if(result.length() > 0)
+				{
+					System.out.println(result);
+				}
 			}
-		}
+		}*/
+		
+		recognizer.transcribeAudio("skenario_jadwal.wav");
 
 	}
 

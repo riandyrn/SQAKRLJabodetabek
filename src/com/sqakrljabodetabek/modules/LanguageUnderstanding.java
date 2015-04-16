@@ -1,10 +1,6 @@
 package com.sqakrljabodetabek.modules;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 
 import com.sqakrljabodetabek.language_analysis_things.AnalysisResult;
@@ -276,28 +272,7 @@ public class LanguageUnderstanding {
 	
 	private ArrayList<String> loadTextFile(String filename)
 	{
-		ArrayList<String> ret = new ArrayList<>();
-		
-		URL file = getClass().getResource(RESOURCE_PATH + filename);
-        BufferedReader in;
-		try {
-			in = new BufferedReader(new InputStreamReader(file.openStream()));
-			
-			String inputLine;
-	        while ((inputLine = in.readLine()) != null)
-	        {
-	        	if(inputLine.charAt(0) != '#')
-	        	{
-	        		ret.add(inputLine);
-	        	}
-	        }
-	            
-	        in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return ret;
+		return CommonHelper.loadTextFile(RESOURCE_PATH, filename);
 	}
 	
 	public static void printArrayList(ArrayList<String> ar)
@@ -323,7 +298,8 @@ public class LanguageUnderstanding {
 	public static void main(String args[])
 	{
 		LanguageUnderstanding lu = new LanguageUnderstanding();
-		lu.testDrive("default_pertanyaan.txt");
+		//lu.testDrive("default_pertanyaan.txt");
+		printArrayList(lu.keywords);
 	}
 	
 }

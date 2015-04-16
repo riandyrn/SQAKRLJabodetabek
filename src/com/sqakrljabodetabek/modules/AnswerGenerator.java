@@ -104,4 +104,24 @@ public class AnswerGenerator {
 		
 		return ret;
 	}
+
+	public static String handleMissingInformation(String key) 
+	{
+		String ret = "";
+		
+		if(key.equals("dari"))
+		{
+			ret = "dari stasiun apa Anda berangkat?";
+		}
+		else if(key.equals("ke"))
+		{
+			ret = "kemana Anda akan pergi?";
+		}
+		
+		return ret;
+	}
+
+	public static String handleNullContextFrame() {
+		return "";
+	}
 }
