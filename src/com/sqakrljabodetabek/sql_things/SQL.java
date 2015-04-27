@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,6 +70,55 @@ public class SQL {
 
 		return ret;
 	}
+    
+    public void executeInsert(SQLRows container, String table)
+    {
+    	
+        try {
+        	con = DriverManager.getConnection(db_url, db_user, db_password);
+        	
+        	Statement statement = con.createStatement();
+        	
+        	for(SQLRow row: container.getContent())
+        	{
+	        	
+        		String query = "INSERT INTO " + table + " VALUES (";
+        		
+        		StringBuilder str = new StringBuilder();
+        		
+        		for(String value: row.getContent())
+        		{
+        			str.append("'" + value + "', ");
+        		}
+        		
+        		String values = str.toString();
+        		query = query.concat(values.substring(0, values.length() - 2) + ")");
+        		
+        		statement.addBatch(query);
+        	}
+            
+            statement.executeBatch();
+            
+        } catch (SQLException ex) {
+            Logger lgr = Logger.getLogger(getClass().getName());
+            lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(getClass().getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    
+    }
     
 	public SQLRows executeSelect(String query)
 	{

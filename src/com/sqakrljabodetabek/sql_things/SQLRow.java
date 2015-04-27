@@ -12,6 +12,11 @@ public class SQLRow {
 		values = new ArrayList<>();
 	}
 	
+	public SQLRow(ArrayList<String> values)
+	{
+		this.values = values;
+	}
+	
 	public SQLRow(ArrayList<String> values, ArrayList<String> columns)
 	{
 		this.columns = columns;
@@ -25,10 +30,17 @@ public class SQLRow {
 	
 	public void printRow()
 	{
-		for(int i = 0; i < columns.size(); i++)
+		for(int i = 0; i < values.size(); i++)
 		{
-			System.out.print(columns.get(i) + ": " + values.get(i) + "; ");
-		}
+			if(columns != null)
+			{
+				System.out.print(columns.get(i) + ": " + values.get(i) + "; ");
+			}
+			else
+			{
+				System.out.print(values.get(i) + "; ");
+			}
+		}	
 	}
 	
 	public ArrayList<String> getColumns()
@@ -38,17 +50,31 @@ public class SQLRow {
 	
 	public String getValue(String key)
 	{
-		int index = columns.indexOf(key);
-		return values.get(index);
+		String ret = null;
+		
+		if(columns != null)
+		{
+			int index = columns.indexOf(key);
+			ret = values.get(index);
+		}
+		
+		return ret;
 	}
 	
 	public boolean isKeyExist(String key)
 	{
-		return columns.indexOf(key) != -1;
+		boolean ret = false;
+		
+		if(columns != null)
+		{
+			ret = columns.indexOf(key) != -1;
+		}
+		
+		return ret;
 	}
 	
 	public boolean isEmpty()
 	{
-		return columns.size() == 0;
+		return values.size() == 0;
 	}
 }

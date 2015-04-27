@@ -15,10 +15,10 @@ public class AnswerGenerator {
 		{
 			String terminals = row.getValue(terminal_col);
 			
-			if(terminals != null)
+			if(!terminals.isEmpty())
 			{
 				
-				String[] tokens = terminals.split(",\\s");
+				String[] tokens = terminals.split(",");
 				str.append("->");
 				
 				for(String token: tokens)

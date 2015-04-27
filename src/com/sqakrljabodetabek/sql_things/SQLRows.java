@@ -54,4 +54,13 @@ public class SQLRows {
 	{
 		return container.size() == 0;
 	}
+	
+	public void print()
+	{
+		for(SQLRow row: container)
+		{
+			row.printRow();
+			System.out.println();
+		}
+	}
 }

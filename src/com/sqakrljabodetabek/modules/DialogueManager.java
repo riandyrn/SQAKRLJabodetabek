@@ -402,18 +402,17 @@ public class DialogueManager {
 	
 	public static void main(String[] args) 
 	{
-		/*	UNTUK MIKROFON dan SKENARIO
+		/*	UNTUK MIKROFON dan SKENARIO */
 			DialogueManager dm = new DialogueManager(false);
-			dm.run();
-			dm.runScenario("scenario_1");
-			dm.runScenarioFromInput();
-		 */
+			//dm.run();
+			dm.runScenario("skenario_rute");
+			//dm.runScenarioFromInput();
 		
 		/* UNTUK FILE AUDIO
-		*/
+		
 		DialogueManager dm = new DialogueManager(true);
 		dm.runTranscriber("skenario_rute.wav");
-		//dm.runTranscriber("skenario_jadwal.wav");
+		//dm.runTranscriber("skenario_jadwal.wav");*/
 		
 	}
 

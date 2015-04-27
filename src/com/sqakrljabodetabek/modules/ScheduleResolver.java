@@ -63,7 +63,7 @@ public class ScheduleResolver {
 		String query = "SELECT " + DEPARTURE_COL + " FROM " + SCHEDULE_TABLE
 						+ " WHERE " +  START_STATION_COL + "='" + start_station + "'" 
 						+ " AND " + END_STATION_COL + "='" + next_station + "'"
-						+ " ORDER BY " + DEPARTURE_COL + " DESC";
+						+ " ORDER BY " + DEPARTURE_COL + " ASC";
 		
 		return AnswerGenerator.constructScheduleAnswer(start_station, end_station, sql.executeSelect(query), DEPARTURE_COL);		
 
@@ -73,12 +73,12 @@ public class ScheduleResolver {
 	private String getNextStation(String start_station, String end_station) {
 		
 		RouteResolver resolver = new RouteResolver();
-		String[] details = resolver.getRouteDetails(start_station, end_station).split(",\\s");
+		String neighbour_station = resolver.getNeighbourStation(start_station, end_station);
 		String ret = end_station;
 		
-		if(details.length > 0)
+		if(!neighbour_station.isEmpty())
 		{
-			ret = details[0];
+			ret = neighbour_station;
 		}
 		
 		return ret;

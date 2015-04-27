@@ -29,6 +29,7 @@ public class CommonHelper {
 	        in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println(e.toString());
 		}
 
 		return ret;

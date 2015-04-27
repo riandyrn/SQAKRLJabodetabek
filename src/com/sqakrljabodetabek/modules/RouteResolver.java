@@ -10,7 +10,7 @@ public class RouteResolver {
 	private final String END_STATION_COL = "stasiun_tujuan";
 	private final String ROUTE_TABLE = "rute";
 	private final String TERMINALS_COL = "terminal";
-	private final String ROUTE_DETAILS_COL = "rincian";
+	private final String NEIGHBOUR_STATION_COL = "stasiun_tetangga";
 	
 	public RouteResolver()
 	{
@@ -25,10 +25,10 @@ public class RouteResolver {
 		return AnswerGenerator.constructRoute(start_station, end_station, sql.executeSelect(query).getFirstRow(), TERMINALS_COL);
 	}
 	
-	public String getRouteDetails(String start_station, String end_station)
+	public String getNeighbourStation(String start_station, String end_station)
 	{
 		String query = "SELECT * FROM " + ROUTE_TABLE  + " WHERE " + START_STATION_COL + "='" 
-				+ start_station + "' AND " + END_STATION_COL + "='" + end_station + "'";
+				+ start_station + "' AND " + END_STATION_COL + "='" + end_station + "' LIMIT 1";
 		
 		SQLRow row = sql.executeSelect(query).getFirstRow();
 		
@@ -36,7 +36,7 @@ public class RouteResolver {
 		
 		if(!row.isEmpty())
 		{
-			ret = row.getValue(ROUTE_DETAILS_COL);
+			ret = row.getValue(NEIGHBOUR_STATION_COL);
 			if(ret == null)
 			{
 				ret = "";
@@ -52,7 +52,8 @@ public class RouteResolver {
 		System.out.println(resolver.resolveRoute("bogor", "citayam"));
 		System.out.println(resolver.resolveRoute("bogor", "cilebut"));
 		System.out.println(resolver.resolveRoute("bogor", "tangerang"));
-		System.out.println(resolver.getRouteDetails("bogor", "tangerang"));
+		System.out.println(resolver.resolveRoute("maja", "tangerang"));
+		System.out.println(resolver.getNeighbourStation("bogor", "depok"));
 	}
 
 }

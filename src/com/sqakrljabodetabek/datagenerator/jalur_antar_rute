@@ -1,0 +1,27 @@
+#<jurusan,jurusan> <stasiun_intersection> <jurusan_intersection ke 2> 
+1,2 manggarai -
+2,1 manggarai -
+1,3 manggarai -
+3,1 manggarai -
+1,6 jakarta_kota -
+6,1 jakarta_kota -
+2,3 manggarai -
+3,2 manggarai -
+2,4 tanah_abang -
+4,2 tanah_abang -
+2,5 duri -
+5,2 duri -
+2,6 kampung_bandan -
+6,2 kampung_bandan -
+3,4 manggarai,tanah_abang 2
+4,3 tanah_abang,manggarai 2
+3,5 manggarai,duri 2
+5,3 duri,manggarai 2
+3,6 jakarta_kota -
+6,3 jakarta_kota -
+4,5 tanah_abang,duri 2
+5,4 duri,tanah_abang 2
+4,6 tanah_abang,kampung_bandan 2
+6,4 kampung_bandan,tanah_abang 2
+5,6 duri,kampung_bandan 2
+6,5 kampung_bandan,duri 2
