@@ -33,6 +33,11 @@ public class SpeechRecognizer {
 		}
 	}
 	
+	public SpeechRecognizer(String config_filename)
+	{
+		initConfig(config_filename);
+	}
+	
 	private void initConfig(String config_filename)
 	{
 		cm = new ConfigurationManager(getClass().getResource(RESOURCE_PATH + "configs/" + config_filename));
@@ -78,7 +83,7 @@ public class SpeechRecognizer {
         	
         	if(!resultText.isEmpty())
         	{
-        		//System.out.println(resultText);
+        		System.out.println(resultText);
         		ret.add(resultText);
         	}
         }
@@ -89,7 +94,7 @@ public class SpeechRecognizer {
     
 	public static void main(String[] args) {
 		
-		SpeechRecognizer recognizer = new SpeechRecognizer(true);
+		//SpeechRecognizer recognizer = new SpeechRecognizer(true);
 		/*System.out.println("Silakan mulai berbicara");
 		while(true)
 		{
@@ -104,8 +109,10 @@ public class SpeechRecognizer {
 			}
 		}*/
 		
-		recognizer.transcribeAudio("skenario_jadwal.wav");
-
+		
+		SpeechRecognizer recognizer = new SpeechRecognizer("transcriber_grammar_ina.xml");
+		recognizer.transcribeAudio("jadwal kereta dari bogor ke depok.wav");
+		recognizer.transcribeAudio("skenario_rute.wav");
 	}
 
 }

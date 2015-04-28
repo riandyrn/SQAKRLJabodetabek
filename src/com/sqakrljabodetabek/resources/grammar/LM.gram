@@ -1,0 +1,9 @@
+#JSGF V1.0;
+
+/**
+ * JSGF Grammar for Hello World example
+ */
+
+grammar hello;
+
+public <greet> = (jadwal kereta menuju depok) | (saya pergi dari stasiun tangerang ke stasiun bogor);
