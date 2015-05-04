@@ -54,8 +54,11 @@ public class SQLRow {
 		
 		if(columns != null)
 		{
-			int index = columns.indexOf(key);
-			ret = values.get(index);
+			if(isKeyExist(key))
+			{
+				int index = columns.indexOf(key);
+				ret = values.get(index);
+			}
 		}
 		
 		return ret;

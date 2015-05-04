@@ -13,6 +13,7 @@ import edu.cmu.sphinx.util.props.ConfigurationManager;
 public class SpeechRecognizer {
 
 	private ConfigurationManager cm;
+	private Microphone microphone;
 	private Recognizer recognizer;
 	private final String RESOURCE_PATH = "/com/sqakrljabodetabek/resources/";
 	
@@ -45,25 +46,26 @@ public class SpeechRecognizer {
 		// allocate the recognizer
         System.out.println("Loading...");
         recognizer = (Recognizer) cm.lookup("recognizer");
+        microphone = (Microphone) cm.lookup("microphone");
         recognizer.allocate();
 	}
 	
 	public String listen()
 	{
-		Microphone microphone = (Microphone) cm.lookup("microphone");
-		
+		microphone.clear();	
 		microphone.startRecording();
 		
         Result result = recognizer.recognize();
-        String resultText = "";
+        microphone.stopRecording();
         
-        if (result != null) {
-            resultText = result.getBestResultNoFiller();
-        } else {
-            resultText = "Mohon maaf, saya tidak mendengar apa yang Anda katakan";
+        String ret = "";
+        
+        if(!result.getBestResultNoFiller().isEmpty())
+        {
+        	ret = result.getBestResultNoFiller();
         }
         
-        return resultText;
+        return ret;
 	}
 	
     public ArrayList<String> transcribeAudio(String filename)
@@ -94,8 +96,8 @@ public class SpeechRecognizer {
     
 	public static void main(String[] args) {
 		
-		//SpeechRecognizer recognizer = new SpeechRecognizer(true);
-		/*System.out.println("Silakan mulai berbicara");
+		SpeechRecognizer recognizer = new SpeechRecognizer(false);
+		System.out.println("Silakan mulai berbicara");
 		while(true)
 		{
 			String result = recognizer.listen();
@@ -107,12 +109,12 @@ public class SpeechRecognizer {
 					System.out.println(result);
 				}
 			}
-		}*/
+		}
 		
 		
-		SpeechRecognizer recognizer = new SpeechRecognizer("transcriber_grammar_ina.xml");
+		/*SpeechRecognizer recognizer = new SpeechRecognizer("transcriber_grammar_ina.xml");
 		recognizer.transcribeAudio("jadwal kereta dari bogor ke depok.wav");
-		recognizer.transcribeAudio("skenario_rute.wav");
+		recognizer.transcribeAudio("skenario_rute.wav");*/
 	}
 
 }

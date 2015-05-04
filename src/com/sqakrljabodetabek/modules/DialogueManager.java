@@ -74,12 +74,14 @@ public class DialogueManager {
 		System.out.println(string);
 	}
 	
-	private void doAppropriateAction() 
+	private String doAppropriateAction() 
 	{
 		String context_frame_category = getContextFrameCategory();
 		
 		String start_station = context_frame.getValue(START_STATION_FRAME_IDENTIFIER);
 		String end_station = context_frame.getValue(END_STATION_FRAME_IDENTIFIER);
+		
+		String ret = "";
 		
 		if(context_frame_category.equals(TIME_ASKING_CATEGORY))
 		{
@@ -87,15 +89,15 @@ public class DialogueManager {
 			String time_modifier = context_frame.getValue(TIME_MODIFIER_KEY);
 			if(time_modifier.equals(TIME_MOST_LATE_VALUE_IDENTIFIER))
 			{
-				printString(scheduleResolver.getMostLateSchedule(start_station, end_station));
+				ret = scheduleResolver.getMostLateSchedule(start_station, end_station);
 			}
 			else if(time_modifier.equals(TIME_MOST_EARLY_VALUE_IDENTIFIER))
 			{
-				printString(scheduleResolver.getMostEarlySchedule(start_station, end_station));
+				ret = scheduleResolver.getMostEarlySchedule(start_station, end_station);
 			}
 			else if(time_modifier.equals(TIME_NEXT_VALUE_IDENTIFIER))
 			{
-				printString(scheduleResolver.getNextSchedule(start_station, end_station));
+				ret = scheduleResolver.getNextSchedule(start_station, end_station);
 			}
 		}
 		else if(context_frame_category.equals(SCHEDULE_ASKING_CATEGORY))
@@ -104,14 +106,16 @@ public class DialogueManager {
 			
 			if(list_jadwal_identifier.equals(SCHEDULE_VALUE_IDENTIFIER))
 			{
-				printString(scheduleResolver.getSchedule(start_station, end_station));
+				ret = scheduleResolver.getSchedule(start_station, end_station);
 			}
 		}
 		else
 		{
 			//System.out.println("ROUTE_ASKING");
-			printString(routeResolver.resolveRoute(start_station, end_station));
+			ret = routeResolver.resolveRoute(start_station, end_station);
 		}
+		
+		return ret;
 		
 		//destroyContextFrame();
 	}
@@ -316,7 +320,7 @@ public class DialogueManager {
 		}
 	}
 	
-	private void executeDMBehavior(String recognized_sentence)
+	public String executeDMBehavior(String recognized_sentence)
 	{
 		/*
 		 * Prosedur ini berisi behavior dari komponen DM
@@ -329,30 +333,34 @@ public class DialogueManager {
 		 * skenario dari file
 		 */
 		
-		System.out.println(recognized_sentence);
-		Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
-		Frame.printFrame(recognized_frame);
-		this.fillContextFrame(recognized_frame);
+		String ret = "";
 		
-		if(context_frame != null)
+		if(!recognized_sentence.isEmpty())
 		{
-			if(isContextFrameComplete())
+			//System.out.println(recognized_sentence);
+			Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
+			//Frame.printFrame(recognized_frame);
+			this.fillContextFrame(recognized_frame);
+				
+			if(context_frame != null)
 			{
-				doAppropriateAction();
-				System.out.println();
-				destroyContextFrame();
+				if(isContextFrameComplete())
+				{
+					ret = doAppropriateAction();
+					destroyContextFrame();
+				}
+				else
+				{
+					ret = AnswerGenerator.handleMissingInformation(getFirstEmptyAttributeKeyInContextFrame());
+				}
 			}
 			else
 			{
-				String response = AnswerGenerator.handleMissingInformation(getFirstEmptyAttributeKeyInContextFrame());
-				System.out.println(response);
+				ret = AnswerGenerator.handleNullContextFrame();
 			}
 		}
-		else
-		{
-			String response = AnswerGenerator.handleNullContextFrame();
-			System.out.println(response);
-		}
+		
+		return ret;
 	}
 
 	public void runScenario(String filename)
@@ -364,7 +372,7 @@ public class DialogueManager {
 		for(String sentence: sentences)
 		{
 			System.out.print("> ");
-			executeDMBehavior(sentence);
+			printString(executeDMBehavior(sentence));
 		}
 	}
 	
@@ -396,8 +404,17 @@ public class DialogueManager {
 		for(String sentence: sentences)
 		{
 			System.out.print("> ");
-			executeDMBehavior(sentence);
+			printString(executeDMBehavior(sentence));
 		}
+	}
+	
+	public String listenUtterance()
+	{
+		/*
+		 * possible returns null
+		 */
+		
+		return speechRecognizer.listen();
 	}
 	
 	public static void main(String[] args) 
