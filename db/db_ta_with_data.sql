@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : MySQLConnection
-Source Server Version : 50611
+Source Server         : mylocal
+Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : db_ta
 
 Target Server Type    : MYSQL
-Target Server Version : 50611
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-04-27 09:03:45
+Date: 2015-05-05 15:51:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `jadwal_keberangkatan`
+-- Table structure for jadwal_keberangkatan
 -- ----------------------------
 DROP TABLE IF EXISTS `jadwal_keberangkatan`;
 CREATE TABLE `jadwal_keberangkatan` (
@@ -3232,7 +3232,7 @@ INSERT INTO `jadwal_keberangkatan` VALUES ('6', '10:51:50', 'jakarta_kota', 'kam
 INSERT INTO `jadwal_keberangkatan` VALUES ('6', '00:42:36', 'kampung_bandan', 'jakarta_kota');
 
 -- ----------------------------
--- Table structure for `jurusan`
+-- Table structure for jurusan
 -- ----------------------------
 DROP TABLE IF EXISTS `jurusan`;
 CREATE TABLE `jurusan` (
@@ -3252,7 +3252,7 @@ INSERT INTO `jurusan` VALUES ('5', 'Tangerang - Duri (PP)');
 INSERT INTO `jurusan` VALUES ('6', 'Tanjung Priok - Jakarta Kota (PP)');
 
 -- ----------------------------
--- Table structure for `rute`
+-- Table structure for rute
 -- ----------------------------
 DROP TABLE IF EXISTS `rute`;
 CREATE TABLE `rute` (
@@ -5409,7 +5409,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');
@@ -9511,7 +9511,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');
@@ -11857,7 +11857,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');

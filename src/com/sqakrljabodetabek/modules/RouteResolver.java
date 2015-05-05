@@ -49,11 +49,11 @@ public class RouteResolver {
 	public static void main(String[] args) 
 	{
 		RouteResolver resolver = new RouteResolver();
-		System.out.println(resolver.resolveRoute("bogor", "citayam"));
-		System.out.println(resolver.resolveRoute("bogor", "cilebut"));
-		System.out.println(resolver.resolveRoute("bogor", "tangerang"));
-		System.out.println(resolver.resolveRoute("maja", "tangerang"));
-		System.out.println(resolver.getNeighbourStation("bogor", "depok"));
+		//System.out.println(resolver.resolveRoute("bogor", "citayam"));
+		//System.out.println(resolver.resolveRoute("bogor", "cilebut"));
+		//System.out.println(resolver.resolveRoute("bogor", "tangerang"));
+		System.out.println(resolver.resolveRoute("jakarta_kota", "depok"));
+		//System.out.println(resolver.getNeighbourStation("bogor", "depok"));*/
 	}
 
 }

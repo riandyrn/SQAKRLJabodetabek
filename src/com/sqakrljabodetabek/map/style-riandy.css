@@ -1,0 +1,85 @@
+body
+{
+	font-family: 'Open Sans';
+	text-align: center;
+	padding-top: 7%;
+	background: whitesmoke;
+}
+
+#rute
+{
+	position: relative;
+	top: -20px;
+}
+
+ul#peta
+{
+	padding-left: 0px;
+}
+
+ul#peta > li
+{
+	display: inline-block;
+	list-style-type: none;
+	padding: 0 20px;
+	position: relative;
+}
+
+ul#peta > li.jurusan
+{
+	font-size: 0.8em;
+	width: 200px;
+}
+
+ul#peta > li.stasiun
+{
+	top: 100px;
+	font-weight: bolder;
+}
+
+li.stasiun > .dot
+{
+	display: block;
+	margin: 0 auto;
+	width: 50px;
+	height: 50px;
+	background: #5CBDAA;
+	margin-bottom: 15px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+}
+
+li.jurusan > .line
+{
+	background: #5CBDAA;
+	height: 20px;
+	width: 350px;
+	position: absolute;
+	top: 35px;
+	right: -50px;
+}
+
+img.img-indicator 
+{
+  width: 70px;
+}
+
+#container
+{
+	position: relative;
+	margin-top: -75px;
+}
+
+#rute, .stasiun
+{
+	text-transform: capitalize;
+}
+
+span.caption
+{
+	position: absolute;
+	width: 220px;
+	right: 10px;
+	top: -25px;
+}

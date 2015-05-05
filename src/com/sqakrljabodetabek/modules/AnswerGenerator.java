@@ -1,4 +1,8 @@
 package com.sqakrljabodetabek.modules;
+import java.util.ArrayList;
+
+import com.mysql.fabric.xmlrpc.base.Array;
+import com.sqakrljabodetabek.sql_things.SQL;
 import com.sqakrljabodetabek.sql_things.SQLRow;
 import com.sqakrljabodetabek.sql_things.SQLRows;
 
@@ -7,9 +11,19 @@ public class AnswerGenerator {
 	
 	public static String constructRoute(String start, String end, SQLRow row, String terminal_col)
 	{
+		/*
+		 * Return answer of route in String and execute map
+		 */
+		
+		//row.printRow();
 		String ret = "";
 		
 		StringBuilder str = new StringBuilder();
+		
+		ArrayList<String> stations = new ArrayList<>();
+		ArrayList<String> lines = new ArrayList<>();
+		
+		stations.add(start);
 		
 		if(row.isKeyExist(terminal_col))
 		{
@@ -24,6 +38,7 @@ public class AnswerGenerator {
 				for(String token: tokens)
 				{
 					str.append(token);
+					stations.add(token);
 					str.append("->");
 				}
 				
@@ -34,6 +49,21 @@ public class AnswerGenerator {
 			}
 		}
 		
+		stations.add(end);
+		
+		if(row.isKeyExist("jurusan"))
+		{
+			String jurusans = row.getValue("jurusan");
+			String[] tokens = jurusans.split(",");
+			
+			System.out.println(jurusans);
+			
+			for(String token: tokens)
+			{
+				lines.add(resolveLine(token));
+			}
+		}
+		
 		if(row.isEmpty())
 		{
 			ret = "Tidak ada jalur dari " + start + " ke " +  end;
@@ -41,8 +71,17 @@ public class AnswerGenerator {
 		else
 		{
 			ret = "Rute dari " + start + " ke " + end + ": " + start + str.toString() + end;
+			Visualizer.openMap(stations, lines);
 		}
 		
+		return ret;
+	}
+
+	private static String resolveLine(String line_id) 
+	{
+		SQL sql = new SQL();
+		SQLRow row = sql.executeSelect("SELECT * FROM jurusan WHERE id='" + line_id + "'").getFirstRow();
+		String ret = row.getValue("deskripsi");
 		return ret;
 	}
 
