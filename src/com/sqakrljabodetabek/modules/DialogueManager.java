@@ -16,15 +16,21 @@ public class DialogueManager {
 	private Frame route_asking;
 	private Frame time_asking;
 	private Frame schedule_asking;
+	private Frame exist_route_asking;
+	private Frame exist_schedule_asking;
 	
 	private final String ROUTE_ASKING_CATEGORY = "route_asking";
 	private final String TIME_ASKING_CATEGORY = "time_asking";
 	private final String SCHEDULE_ASKING_CATEGORY = "schedule_asking";
+	private final String EXIST_ROUTE_ASKING_CATEGORY = "exist_route_asking";
+	private final String EXIST_SCHEDULE_ASKING_CATEGORY = "exist_schedule_asking";
 			
 	private final String LIST_JADWAL_IDENTIFIER_KEY = "list_jadwal_identifier";
 	private final String TIME_MODIFIER_KEY = "time_modifier";
 	private final String PLACE_IDENTIFIER_ORIGIN_KEY = "dari";
 	private final String PLACE_IDENTIFIER_DESTINATION_KEY = "ke";
+	private final String EXIST_ROUTE_IDENTIFIER_KEY = "ada_kereta";
+	private final String EXIST_SCHEDULE_IDENTIFIER_KEY = "ada_jadwal";
 	
 	private final String START_STATION_FRAME_IDENTIFIER = "dari";
 	private final String END_STATION_FRAME_IDENTIFIER = "ke";
@@ -83,7 +89,15 @@ public class DialogueManager {
 		
 		String ret = "";
 		
-		if(context_frame_category.equals(TIME_ASKING_CATEGORY))
+		if(context_frame_category.equals(EXIST_ROUTE_ASKING_CATEGORY))
+		{
+			
+		}
+		else if(context_frame_category.equals(EXIST_SCHEDULE_ASKING_CATEGORY))
+		{
+			
+		}
+		else if(context_frame_category.equals(TIME_ASKING_CATEGORY))
 		{
 			//System.out.println("TIME_ASKING");
 			String time_modifier = context_frame.getValue(TIME_MODIFIER_KEY);
@@ -175,6 +189,8 @@ public class DialogueManager {
 		constructFrameRouteAsking();
 		constructFrameScheduleAsking();
 		constructFrameTimeAsking();
+		constructFrameExistRouteAsking();
+		constructFrameExistScheduleAsking();
 	}
 	
 	public boolean isContextFrameComplete()
@@ -211,7 +227,15 @@ public class DialogueManager {
 		ArrayList<String> keys = frame.getKeys();
 		Frame ret = null;
 		
-		if(keys.contains(TIME_MODIFIER_KEY))
+		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
+		{
+			ret = exist_route_asking;
+		}
+		else if(keys.contains(EXIST_SCHEDULE_IDENTIFIER_KEY))
+		{
+			ret = exist_schedule_asking;
+		}
+		else if(keys.contains(TIME_MODIFIER_KEY))
 		{
 			ret = time_asking;
 		}
@@ -232,7 +256,15 @@ public class DialogueManager {
 		ArrayList<String> keys = context_frame.getKeys();
 		String ret;
 		
-		if(keys.contains(TIME_MODIFIER_KEY))
+		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
+		{
+			ret = EXIST_ROUTE_ASKING_CATEGORY;
+		}
+		else if(keys.contains(EXIST_SCHEDULE_IDENTIFIER_KEY))
+		{
+			ret = EXIST_SCHEDULE_ASKING_CATEGORY;
+		}
+		else if(keys.contains(TIME_MODIFIER_KEY))
 		{
 			ret = TIME_ASKING_CATEGORY;
 		}
@@ -276,6 +308,16 @@ public class DialogueManager {
 	private void constructFrameRouteAsking() 
 	{
 		route_asking = initializeFrame(Arrays.asList("dari", "ke"));
+	}
+	
+	private void constructFrameExistRouteAsking()
+	{
+		exist_route_asking = initializeFrame(Arrays.asList("ke", "exist_route_identifier"));
+	}
+	
+	private void constructFrameExistScheduleAsking()
+	{
+		exist_schedule_asking = initializeFrame(Arrays.asList("dari", "ke", "exist_schedule_identifier"));
 	}
 	
 	private Frame initializeFrame(List<String> keys)

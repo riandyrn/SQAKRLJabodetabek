@@ -1,7 +1,6 @@
 package com.sqakrljabodetabek.modules;
 import java.util.ArrayList;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.sqakrljabodetabek.sql_things.SQL;
 import com.sqakrljabodetabek.sql_things.SQLRow;
 import com.sqakrljabodetabek.sql_things.SQLRows;

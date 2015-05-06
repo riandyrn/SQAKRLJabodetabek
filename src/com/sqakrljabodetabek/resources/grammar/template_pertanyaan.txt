@@ -1,0 +1,55 @@
+saya mau pergi ke <place> dari <place> naik apa
+kapan kereta selanjutnya berangkat dari <place>
+kereta apa yang sampai <place> jam sembilan
+mau tanya kereta dari <place> ke <place>
+jam_berapa kereta dari <place> sampai_di <place>
+ada_kereta yang menuju <place>
+kapan kereta terakhir berangkat dari <place>
+saya ada di <place> mau ke <place> naik apa ya
+kapan kereta berikutnya berangkat dari <place> ke <place>
+kalau mau pergi dari <place> ke <place> naik apa
+jurusan apa saja yang lewat <place>
+saya mau ke <place> kapan_saja bisa berangkat dari <place>
+<place> ke <place> naik apa
+kapan kereta paling_akhir berangkat dari <place>
+<place> dan <place> ada di satu jalur tidak
+ke <place> naik apa
+<place> <place> naik apa
+ada_kereta dari <place> ke <place>
+ke <place> dari <place> naik apa
+jalur kereta yang ke <place>
+<place> ke <place> transit dimana saja
+kapan kereta paling_awal sampai_di <place>
+<place> ke <place> kira-kira berapa lama
+mulai_jam_berapa saya bisa pergi ke <place> dari <place>
+paling_pagi jam_berapa saya bisa sampai_di <place>
+paling_akhir ke <place> jam_berapa
+kereta paling_akhir dari <place>
+kereta paling_akhir dari <place> ke <place>
+saya bisa ke <place> naik kereta apa saja
+<place> ke <place> naik berapa kereta
+ke <place> naik apa
+dari <place> ke <place> naik apa
+dari <place> ke <place>
+dari <place> ke <place>
+jam_berapa kereta selanjutnya berangkat dari <place>
+<place> ke <place> naiknya apa
+dari <place> ke <place> naik apa
+jadwal kereta dari <place> ke <place>
+saya mau tanya jadwal kereta dari <place> ke <place>
+kereta selanjutnya dari <place> ke <place>
+kereta paling_pagi dari <place> ke <place>
+kereta paling_akhir dari <place> ke <place>
+jadwal kereta dari <place> ke <place> 
+jadwal kereta dari <place> ke <place>
+kereta paling_pagi menuju <place>
+dari <place>
+mulai_jam_berapa saya bisa pergi ke <place>
+mau tanya jadwal kereta selanjutnya
+ke <place>
+mau tanya jadwal kereta terakhir
+saya ingin pergi dari <place> ke <place>
+saya ingin pergi ke stasiun <place> dari stasiun <place>
+saya ingin pergi ke <place>
+dari stasiun <place>
+saya ingin pergi dari <place> ke <place> naiknya apa ya
