@@ -122,6 +122,12 @@ public class AnswerGenerator {
 		
 		if(!rows.isEmpty())
 		{
+			ArrayList<String> stations = new ArrayList<>();
+			stations.add(start);
+			stations.add(end);
+			
+			ArrayList<String> schedules = new ArrayList<>();
+			
 			StringBuilder str = new StringBuilder();
 			str.append("Jadwal dari " + start + " menuju " + end + "\n");
 			for(SQLRow row: rows.getContent())
@@ -133,11 +139,13 @@ public class AnswerGenerator {
 						String time = row.getValue(departure_col);
 						time = time.substring(0, time.length() - 3);
 						str.append(time + "\n");
+						schedules.add(time);
 					}
 				}
 			}
 			
 			ret = str.toString();
+			Visualizer.openSchedules(stations, schedules);
 		}
 		
 		return ret;
@@ -161,5 +169,15 @@ public class AnswerGenerator {
 
 	public static String handleNullContextFrame() {
 		return "";
+	}
+
+	public static String constructDestinationAvailable(String end_station) 
+	{
+		return "Ya, ada rute menuju " + end_station + ". Darimana Anda akan berangkat?";
+	}
+
+	public static String constructDestinationNotAvailable(String end_station) 
+	{
+		return "Tidak ada rute menuju " + end_station;
 	}
 }

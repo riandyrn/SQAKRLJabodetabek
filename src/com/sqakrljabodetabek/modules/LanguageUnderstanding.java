@@ -17,7 +17,7 @@ public class LanguageUnderstanding {
 	
 	private ArrayList<String> places;
 	private ArrayList<String> time_modifiers;
-	private ArrayList<String> ada_identifiers;
+	private ArrayList<String> exist_route_identifiers;
 	private ArrayList<String> list_jadwal_identifiers;
 	private ArrayList<String> place_identifiers;
 	
@@ -27,7 +27,7 @@ public class LanguageUnderstanding {
 	private final String TIME_MODIFIER = "time_modifier";
 	private final String PLACE_IDENTIFIER = "place_identifier";
 	private final String LIST_JADWAL_IDENTIFIER = "list_jadwal_identifier";
-	private final String ADA_IDENTIFIER = "ada_identifier";
+	private final String EXIST_ROUTE_IDENTIFIER = "exist_route_identifier";
 	
 	private ArrayList<String> keywords;
 	
@@ -86,9 +86,9 @@ public class LanguageUnderstanding {
 				Slot slot = new Slot(LIST_JADWAL_IDENTIFIER, row[0]);
 				ret.add(slot);
 			}
-			else if(keyword_category.equals(ADA_IDENTIFIER))
+			else if(keyword_category.equals(EXIST_ROUTE_IDENTIFIER))
 			{
-				Slot slot = new Slot(ADA_IDENTIFIER, row[0]);
+				Slot slot = new Slot(EXIST_ROUTE_IDENTIFIER, row[0]);
 				ret.add(slot);
 			}
 		}
@@ -210,9 +210,9 @@ public class LanguageUnderstanding {
 		{
 			ret = LIST_JADWAL_IDENTIFIER;
 		}
-		else if(ada_identifiers.contains(keyword))
+		else if(exist_route_identifiers.contains(keyword))
 		{
-			ret = ADA_IDENTIFIER;
+			ret = EXIST_ROUTE_IDENTIFIER;
 		}
 		
 		return ret;
@@ -254,7 +254,7 @@ public class LanguageUnderstanding {
 	{
 		keywords = new ArrayList<>();
 		keywords.addAll(place_identifiers);
-		keywords.addAll(ada_identifiers);
+		keywords.addAll(exist_route_identifiers);
 		keywords.addAll(list_jadwal_identifiers);
 		keywords.addAll(time_modifiers);
 	}
@@ -263,7 +263,7 @@ public class LanguageUnderstanding {
 	{
 		places = loadTextFile("places");
 		time_modifiers = loadTextFile("time_modifiers");
-		ada_identifiers = loadTextFile("ada_identifiers");
+		exist_route_identifiers = loadTextFile("exist_route_identifiers");
 		list_jadwal_identifiers = loadTextFile("list_jadwal_identifiers");
 		place_identifiers = loadTextFile("place_identifiers");
 		place_identifiers_relations = loadTextFile("place_identifiers_relations");

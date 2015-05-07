@@ -2430,7 +2430,9 @@ ke						 k e
 menuju					 m e n u j u
 menuju_ke				 m e n u j u k e
 sampai_di				 s a m p a i d i
-ada_kereta				 a d a k e r e t a
+ada_kereta				 a d a k r e t a
+ada_jalur			 	 a d a j a l u r
+ada_rute				 a d a r u t e
 kapan_saja				 k a p a n s a j a
 jam_berapa_saja			 j a m b e r a p a s a j a
 pukul_berapa_saja		 p u k u l b e r a p a s a j a

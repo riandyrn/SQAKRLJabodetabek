@@ -6,23 +6,56 @@ import java.util.Arrays;
 public class Visualizer 
 {
 	
-	private static final String MAP_RESOURCE_PATH = "/com/sqakrljabodetabek/map";
-	private static final String MAP_FILENAME = "index.html";
-	private static final String MAP_VARIABLES_FILENAME = "variables.js";
+	private static final String VISUALIZATION_RESOURCE_PATH = "/com/sqakrljabodetabek/visualization";
+	private static final String MAP_FILENAME = "map.html";
+	private static final String MAP_VARIABLES_FILENAME = "map_variables.js";
+	private static final String SCHEDULES_FILENAME = "schedules.html";
+	private static final String SCHEDULES_VARIABLES_FILENAME = "schedules_variables.js";
 	
 	public static void openMap(ArrayList<String> stations, ArrayList<String> lines)
 	{
-		writeVariables(stations, lines);
+		writeMapVariables(stations, lines);
 		openHTMLMap();
+	}
+
+	public static void openSchedules(ArrayList<String> stations, ArrayList<String> schedules)
+	{
+		writeSchedulesVariables(stations, schedules);
+		openHTMLSchedules();
+	}
+
+	private static void openHTMLSchedules() 
+	{
+		CommonHelper.openFile(VISUALIZATION_RESOURCE_PATH, SCHEDULES_FILENAME);
 	}
 
 	private static void openHTMLMap() 
 	{
-		CommonHelper.openFile(MAP_RESOURCE_PATH, MAP_FILENAME);
+		CommonHelper.openFile(VISUALIZATION_RESOURCE_PATH, MAP_FILENAME);	
+	}
+	
+	private static void writeSchedulesVariables(ArrayList<String> stations, ArrayList<String> schedules) 
+	{
+		StringBuilder str = new StringBuilder();
 		
+		str.append("var stations = [");
+		for(String station: stations)
+		{
+			str.append("'" + station + "', ");
+		}
+		str.append("];\n");
+		
+		str.append("var departure_hours = [");
+		for(String schedule: schedules)
+		{
+			str.append("'" + schedule + "', ");
+		}
+		str.append("];");
+		
+		CommonHelper.writeToFile(str.toString(), VISUALIZATION_RESOURCE_PATH, SCHEDULES_VARIABLES_FILENAME);			
 	}
 
-	private static void writeVariables(ArrayList<String> stations, ArrayList<String> lines) 
+	private static void writeMapVariables(ArrayList<String> stations, ArrayList<String> lines) 
 	{
 		StringBuilder str = new StringBuilder();
 		
@@ -40,7 +73,7 @@ public class Visualizer
 		}
 		str.append("];");
 		
-		CommonHelper.writeToFile(str.toString(), MAP_RESOURCE_PATH, MAP_VARIABLES_FILENAME);
+		CommonHelper.writeToFile(str.toString(), VISUALIZATION_RESOURCE_PATH, MAP_VARIABLES_FILENAME);
 	}
 	
 	public static void main(String args[])

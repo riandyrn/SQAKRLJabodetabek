@@ -17,20 +17,17 @@ public class DialogueManager {
 	private Frame time_asking;
 	private Frame schedule_asking;
 	private Frame exist_route_asking;
-	private Frame exist_schedule_asking;
-	
+
 	private final String ROUTE_ASKING_CATEGORY = "route_asking";
 	private final String TIME_ASKING_CATEGORY = "time_asking";
 	private final String SCHEDULE_ASKING_CATEGORY = "schedule_asking";
 	private final String EXIST_ROUTE_ASKING_CATEGORY = "exist_route_asking";
-	private final String EXIST_SCHEDULE_ASKING_CATEGORY = "exist_schedule_asking";
 			
 	private final String LIST_JADWAL_IDENTIFIER_KEY = "list_jadwal_identifier";
 	private final String TIME_MODIFIER_KEY = "time_modifier";
 	private final String PLACE_IDENTIFIER_ORIGIN_KEY = "dari";
 	private final String PLACE_IDENTIFIER_DESTINATION_KEY = "ke";
-	private final String EXIST_ROUTE_IDENTIFIER_KEY = "ada_kereta";
-	private final String EXIST_SCHEDULE_IDENTIFIER_KEY = "ada_jadwal";
+	private final String EXIST_ROUTE_IDENTIFIER_KEY = "exist_route_identifier";
 	
 	private final String START_STATION_FRAME_IDENTIFIER = "dari";
 	private final String END_STATION_FRAME_IDENTIFIER = "ke";
@@ -82,51 +79,91 @@ public class DialogueManager {
 	
 	private String doAppropriateAction() 
 	{
+		/*
+		 * fungsi ini akan return string yang sesuai
+		 * dengan context frame lengkap yang diproses
+		 */
+		
 		String context_frame_category = getContextFrameCategory();
 		
-		String start_station = context_frame.getValue(START_STATION_FRAME_IDENTIFIER);
+		String start_station;
 		String end_station = context_frame.getValue(END_STATION_FRAME_IDENTIFIER);
 		
 		String ret = "";
 		
 		if(context_frame_category.equals(EXIST_ROUTE_ASKING_CATEGORY))
 		{
+			/*
+			 * ini akan ngecek dulu apakah destination-nya available
+			 * atau nggak, kalau available dia akan ngeluarin jawaban
+			 * ada rute dr AnswerGenerator, vice viersa
+			 * 
+			 * setelah itu bergantung jika ternyata available, fungsi
+			 * ini akan mengeset contextframe menjadi route_asking
+			 * yg sudah diset value dari field 'ke'-nya sesuai dengan
+			 * destination yang dicek di awal. --> inilah alasan kenapa
+			 * hasil dari pengecekan availabilitas destination nggak
+			 * langsung diserahkan ke answer generator.
+			 */
 			
-		}
-		else if(context_frame_category.equals(EXIST_SCHEDULE_ASKING_CATEGORY))
-		{
-			
-		}
-		else if(context_frame_category.equals(TIME_ASKING_CATEGORY))
-		{
-			//System.out.println("TIME_ASKING");
-			String time_modifier = context_frame.getValue(TIME_MODIFIER_KEY);
-			if(time_modifier.equals(TIME_MOST_LATE_VALUE_IDENTIFIER))
+			//cek dulu destination available enggak
+			if(routeResolver.isDestinationAvailable(end_station))
 			{
-				ret = scheduleResolver.getMostLateSchedule(start_station, end_station);
+				ret = AnswerGenerator.constructDestinationAvailable(end_station);
+				destroyContextFrame();
+				
+				// assign context frame baru
+				
+				Slot slot = new Slot(PLACE_IDENTIFIER_DESTINATION_KEY, end_station);
+				Frame frame = new Frame();
+				frame.add(slot);
+				
+				this.fillContextFrame(frame);
+				
 			}
-			else if(time_modifier.equals(TIME_MOST_EARLY_VALUE_IDENTIFIER))
+			else
 			{
-				ret = scheduleResolver.getMostEarlySchedule(start_station, end_station);
-			}
-			else if(time_modifier.equals(TIME_NEXT_VALUE_IDENTIFIER))
-			{
-				ret = scheduleResolver.getNextSchedule(start_station, end_station);
-			}
-		}
-		else if(context_frame_category.equals(SCHEDULE_ASKING_CATEGORY))
-		{
-			String list_jadwal_identifier = context_frame.getValue(LIST_JADWAL_IDENTIFIER_KEY);
-			
-			if(list_jadwal_identifier.equals(SCHEDULE_VALUE_IDENTIFIER))
-			{
-				ret = scheduleResolver.getSchedule(start_station, end_station);
+				ret = AnswerGenerator.constructDestinationNotAvailable(end_station);
+				destroyContextFrame();
 			}
 		}
 		else
 		{
-			//System.out.println("ROUTE_ASKING");
-			ret = routeResolver.resolveRoute(start_station, end_station);
+			start_station = context_frame.getValue(START_STATION_FRAME_IDENTIFIER);
+			
+			if(context_frame_category.equals(TIME_ASKING_CATEGORY))
+			{
+				String time_modifier = context_frame.getValue(TIME_MODIFIER_KEY);
+				
+				if(time_modifier.equals(TIME_MOST_LATE_VALUE_IDENTIFIER))
+				{
+					ret = scheduleResolver.getMostLateSchedule(start_station, end_station);
+				}
+				else if(time_modifier.equals(TIME_MOST_EARLY_VALUE_IDENTIFIER))
+				{
+					ret = scheduleResolver.getMostEarlySchedule(start_station, end_station);
+				}
+				else if(time_modifier.equals(TIME_NEXT_VALUE_IDENTIFIER))
+				{
+					ret = scheduleResolver.getNextSchedule(start_station, end_station);
+				}
+			}
+			else if(context_frame_category.equals(SCHEDULE_ASKING_CATEGORY))
+			{
+				String list_jadwal_identifier = context_frame.getValue(LIST_JADWAL_IDENTIFIER_KEY);
+				
+				if(list_jadwal_identifier.equals(SCHEDULE_VALUE_IDENTIFIER))
+				{
+					ret = scheduleResolver.getSchedule(start_station, end_station);
+				}
+			}
+			else
+			{
+				//System.out.println("ROUTE_ASKING");
+				ret = routeResolver.resolveRoute(start_station, end_station);
+			}
+			
+			destroyContextFrame();
 		}
 		
 		return ret;
@@ -190,7 +227,6 @@ public class DialogueManager {
 		constructFrameScheduleAsking();
 		constructFrameTimeAsking();
 		constructFrameExistRouteAsking();
-		constructFrameExistScheduleAsking();
 	}
 	
 	public boolean isContextFrameComplete()
@@ -231,10 +267,6 @@ public class DialogueManager {
 		{
 			ret = exist_route_asking;
 		}
-		else if(keys.contains(EXIST_SCHEDULE_IDENTIFIER_KEY))
-		{
-			ret = exist_schedule_asking;
-		}
 		else if(keys.contains(TIME_MODIFIER_KEY))
 		{
 			ret = time_asking;
@@ -259,10 +291,6 @@ public class DialogueManager {
 		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
 		{
 			ret = EXIST_ROUTE_ASKING_CATEGORY;
-		}
-		else if(keys.contains(EXIST_SCHEDULE_IDENTIFIER_KEY))
-		{
-			ret = EXIST_SCHEDULE_ASKING_CATEGORY;
 		}
 		else if(keys.contains(TIME_MODIFIER_KEY))
 		{
@@ -314,12 +342,7 @@ public class DialogueManager {
 	{
 		exist_route_asking = initializeFrame(Arrays.asList("ke", "exist_route_identifier"));
 	}
-	
-	private void constructFrameExistScheduleAsking()
-	{
-		exist_schedule_asking = initializeFrame(Arrays.asList("dari", "ke", "exist_schedule_identifier"));
-	}
-	
+
 	private Frame initializeFrame(List<String> keys)
 	{
 		Frame ret = new Frame();
@@ -379,9 +402,9 @@ public class DialogueManager {
 		
 		if(!recognized_sentence.isEmpty())
 		{
-			//System.out.println(recognized_sentence);
+			System.out.println(recognized_sentence);
 			Frame recognized_frame = languageUnderstanding.getFrame(recognized_sentence);
-			//Frame.printFrame(recognized_frame);
+			Frame.printFrame(recognized_frame);
 			this.fillContextFrame(recognized_frame);
 				
 			if(context_frame != null)
@@ -389,7 +412,6 @@ public class DialogueManager {
 				if(isContextFrameComplete())
 				{
 					ret = doAppropriateAction();
-					destroyContextFrame();
 				}
 				else
 				{
@@ -464,7 +486,7 @@ public class DialogueManager {
 		/*	UNTUK MIKROFON dan SKENARIO */
 			DialogueManager dm = new DialogueManager(false);
 			//dm.run();
-			dm.runScenario("skenario_rute");
+			dm.runScenario("skenario_exist_rute_jadwal");
 			//dm.runScenarioFromInput();
 		
 		/* UNTUK FILE AUDIO
@@ -472,6 +494,8 @@ public class DialogueManager {
 		DialogueManager dm = new DialogueManager(true);
 		dm.runTranscriber("skenario_rute.wav");
 		//dm.runTranscriber("skenario_jadwal.wav");*/
+			
+		
 		
 	}
 

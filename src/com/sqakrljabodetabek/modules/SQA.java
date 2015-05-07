@@ -1,20 +1,14 @@
-import java.awt.BorderLayout;
+package com.sqakrljabodetabek.modules;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
-
-import com.sqakrljabodetabek.modules.DialogueManager;
-import com.sqakrljabodetabek.modules.SpeechRecognizer;
-
-import javax.swing.JTextField;
 import javax.swing.JLabel;
-
-import java.awt.Color;
-import java.util.ArrayList;
+import javax.swing.JTextField;
 
 
 public class SQA {

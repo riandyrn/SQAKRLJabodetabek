@@ -83,3 +83,13 @@ span.caption
 	right: 10px;
 	top: -25px;
 }
+
+body#schedules_body
+{
+	padding-top: 10px;
+}
+
+table#table_schedules
+{
+	margin: 0 auto;
+}
