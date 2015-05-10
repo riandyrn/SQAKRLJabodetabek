@@ -44,6 +44,8 @@ public class DialogueManager {
 	private ScheduleResolver scheduleResolver;
 	
 	private final String RESOURCE_PATH = "/com/sqakrljabodetabek/scenario_files/";
+	
+	private boolean EXIST_ROUTE_COMPLETE_FLAG = false;
 
 	public DialogueManager()
 	{
@@ -161,6 +163,14 @@ public class DialogueManager {
 			{
 				//System.out.println("ROUTE_ASKING");
 				ret = routeResolver.resolveRoute(start_station, end_station);
+				
+				if(EXIST_ROUTE_COMPLETE_FLAG)
+				{
+					if(routeResolver.isDestinationAvailable(end_station))
+					{
+						ret = "Ada rute dari " + start_station + " ke " + end_station + ". " + ret;
+					}
+				}
 			}
 			
 			destroyContextFrame();
@@ -263,7 +273,7 @@ public class DialogueManager {
 		ArrayList<String> keys = frame.getKeys();
 		Frame ret = null;
 		
-		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
+		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY) && !keys.contains(PLACE_IDENTIFIER_ORIGIN_KEY))
 		{
 			ret = exist_route_asking;
 		}
@@ -277,6 +287,11 @@ public class DialogueManager {
 		}
 		else if(keys.contains(PLACE_IDENTIFIER_DESTINATION_KEY) || keys.contains(PLACE_IDENTIFIER_ORIGIN_KEY))
 		{
+			if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
+			{
+				EXIST_ROUTE_COMPLETE_FLAG = true;
+			}
+			
 			ret = route_asking;
 		}
 		

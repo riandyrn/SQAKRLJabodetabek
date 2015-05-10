@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : mylocal
-Source Server Version : 50616
+Source Server         : MySQLConnection
+Source Server Version : 50611
 Source Host           : localhost:3306
 Source Database       : db_ta
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50611
 File Encoding         : 65001
 
-Date: 2015-05-05 15:51:11
+Date: 2015-05-10 21:02:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for jadwal_keberangkatan
+-- Table structure for `jadwal_keberangkatan`
 -- ----------------------------
 DROP TABLE IF EXISTS `jadwal_keberangkatan`;
 CREATE TABLE `jadwal_keberangkatan` (
@@ -3232,7 +3232,7 @@ INSERT INTO `jadwal_keberangkatan` VALUES ('6', '10:51:50', 'jakarta_kota', 'kam
 INSERT INTO `jadwal_keberangkatan` VALUES ('6', '00:42:36', 'kampung_bandan', 'jakarta_kota');
 
 -- ----------------------------
--- Table structure for jurusan
+-- Table structure for `jurusan`
 -- ----------------------------
 DROP TABLE IF EXISTS `jurusan`;
 CREATE TABLE `jurusan` (
@@ -3252,7 +3252,29 @@ INSERT INTO `jurusan` VALUES ('5', 'Tangerang - Duri (PP)');
 INSERT INTO `jurusan` VALUES ('6', 'Tanjung Priok - Jakarta Kota (PP)');
 
 -- ----------------------------
--- Table structure for rute
+-- Table structure for `non_stop_stations`
+-- ----------------------------
+DROP TABLE IF EXISTS `non_stop_stations`;
+CREATE TABLE `non_stop_stations` (
+  `station` varchar(255) DEFAULT NULL,
+  FULLTEXT KEY `station` (`station`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of non_stop_stations
+-- ----------------------------
+INSERT INTO `non_stop_stations` VALUES ('tanah_tinggi');
+INSERT INTO `non_stop_stations` VALUES ('taman_kota');
+INSERT INTO `non_stop_stations` VALUES ('grogol');
+INSERT INTO `non_stop_stations` VALUES ('angke');
+INSERT INTO `non_stop_stations` VALUES ('ancol');
+INSERT INTO `non_stop_stations` VALUES ('tanjung_priok');
+INSERT INTO `non_stop_stations` VALUES ('gambir');
+INSERT INTO `non_stop_stations` VALUES ('mampang');
+INSERT INTO `non_stop_stations` VALUES ('cipinang');
+
+-- ----------------------------
+-- Table structure for `rute`
 -- ----------------------------
 DROP TABLE IF EXISTS `rute`;
 CREATE TABLE `rute` (
@@ -5405,22 +5427,22 @@ INSERT INTO `rute` VALUES ('jayakarta', 'duri', 'manggarai', 'mangga_besar', '1,
 INSERT INTO `rute` VALUES ('jayakarta', 'jakarta_kota', 'manggarai', '', '1');
 INSERT INTO `rute` VALUES ('jayakarta', 'kampung_bandan', 'manggarai', 'mangga_besar', '1,2');
 INSERT INTO `rute` VALUES ('jayakarta', 'rajawali', 'manggarai', 'mangga_besar', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -5449,21 +5471,21 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'sudirman', 'manggarai', 'jayakarta',
 INSERT INTO `rute` VALUES ('jakarta_kota', 'karet', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'tanah_abang', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kemayoran', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_senen', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gang_sentiong', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kramat', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_jati', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -5495,7 +5517,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'rawa_buaya', 'manggarai,duri', 'jaya
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_indah', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pesing', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('bogor', 'cilebut', 'manggarai', '', '1');
 INSERT INTO `rute` VALUES ('bogor', 'bojong_gede', 'manggarai', 'cilebut', '1');
@@ -9507,22 +9529,22 @@ INSERT INTO `rute` VALUES ('jayakarta', 'duri', 'manggarai', 'mangga_besar', '1,
 INSERT INTO `rute` VALUES ('jayakarta', 'jakarta_kota', 'manggarai', '', '1');
 INSERT INTO `rute` VALUES ('jayakarta', 'kampung_bandan', 'manggarai', 'mangga_besar', '1,2');
 INSERT INTO `rute` VALUES ('jayakarta', 'rajawali', 'manggarai', 'mangga_besar', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -9551,21 +9573,21 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'sudirman', 'manggarai', 'jayakarta',
 INSERT INTO `rute` VALUES ('jakarta_kota', 'karet', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'tanah_abang', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kemayoran', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_senen', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gang_sentiong', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kramat', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_jati', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -9597,7 +9619,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'rawa_buaya', 'manggarai,duri', 'jaya
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_indah', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pesing', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('maja', 'bogor', 'tanah_abang', 'tigaraksa', '4,2');
 INSERT INTO `rute` VALUES ('maja', 'cilebut', 'tanah_abang', 'tigaraksa', '4,2');
@@ -11853,22 +11875,22 @@ INSERT INTO `rute` VALUES ('duri', 'pesing', '', '', '2');
 INSERT INTO `rute` VALUES ('duri', 'jakarta_kota', 'manggarai', 'tanah_abang', '2,1');
 INSERT INTO `rute` VALUES ('duri', 'kampung_bandan', 'manggarai', '', '2');
 INSERT INTO `rute` VALUES ('duri', 'rajawali', 'manggarai', 'kampung_bandan', '2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bogor', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cilebut', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_gede', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'citayam', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'depok', '', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'depok_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_cina', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_indonesia', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'universitas_pancasila', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'lenteng_agung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tanjung_barat', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_minggu_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'duren_kalibata', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cawang', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'tebet', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -11897,21 +11919,21 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'sudirman', 'manggarai', 'jayakarta',
 INSERT INTO `rute` VALUES ('jakarta_kota', 'karet', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'tanah_abang', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kemayoran', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pasar_senen', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gang_sentiong', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'kramat', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pondok_jati', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', 'manggarai', 'jayakarta', '1');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', 'manggarai', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'bekasi', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kranji', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'cakung', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender_baru', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'buaran', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'klender', '', 'jayakarta', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'jatinegara', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'manggarai', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'cikini', '', 'jayakarta', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'gondangdia', '', 'jayakarta', '1');
@@ -11943,7 +11965,7 @@ INSERT INTO `rute` VALUES ('jakarta_kota', 'rawa_buaya', 'manggarai,duri', 'jaya
 INSERT INTO `rute` VALUES ('jakarta_kota', 'bojong_indah', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'pesing', 'manggarai,duri', 'jayakarta', '3,2,5');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'duri', 'manggarai', 'jayakarta', '1,2');
-INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', 'manggarai', '', '1');
+INSERT INTO `rute` VALUES ('jakarta_kota', 'kampung_bandan', '', '', '1');
 INSERT INTO `rute` VALUES ('jakarta_kota', 'rajawali', 'manggarai', 'jayakarta', '1,2');
 INSERT INTO `rute` VALUES ('kampung_bandan', 'bogor', 'manggarai', 'duri', '2');
 INSERT INTO `rute` VALUES ('kampung_bandan', 'cilebut', 'manggarai', 'duri', '2');

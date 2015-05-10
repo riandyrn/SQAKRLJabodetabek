@@ -65,7 +65,7 @@ public class AnswerGenerator {
 		
 		if(row.isEmpty())
 		{
-			ret = "Tidak ada jalur dari " + start + " ke " +  end;
+			ret = "Tidak ada rute dari " + start + " ke " +  end;
 		}
 		else
 		{
