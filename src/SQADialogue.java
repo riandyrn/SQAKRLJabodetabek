@@ -157,15 +157,16 @@ public class SQADialogue {
 				{
 					String utterance = dm.listenUtterance();
 					
-					if(!utterance.isEmpty())
+					/* ini karena listenUtterance() process-nya
+					 * di thread lain dan dia baru mengembalikan
+					 * jika prosesnyas selesai
+					 */
+					if(isSpeaking && !utterance.isEmpty())
 					{
 						System.out.println(utterance);
 						recognizedUtterances.add(utterance);
-					}
-					
-					System.out.println("Ini dari thread");
-					
-					if(isSpeaking) updateTxtPengguna();
+						updateTxtPengguna();
+					}			
 				}
 			}
 		};
