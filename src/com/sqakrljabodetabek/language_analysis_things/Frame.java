@@ -130,5 +130,36 @@ public class Frame {
 		}
 
 	}
+	
+	public String toString()
+	{
+		StringBuilder str = new StringBuilder();
+		
+		if(container != null)
+		{
+	
+			str.append("{");
+			
+			for(int i = 0; i < container.size(); i++)
+			{
+				Slot slot = container.get(i);
+				str.append(slot.getKey() + ": " + slot.getValue());
+				
+				if(i < container.size() - 1)
+				{
+					str.append("; ");
+				}
+			}
+			
+			str.append("}");
+		}
+		else
+		{
+			str.append("null frame");
+		}
+		
+		return str.toString();
+	}
+	
 
 }

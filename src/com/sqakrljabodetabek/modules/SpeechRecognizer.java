@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import edu.cmu.sphinx.frontend.util.AudioFileDataSource;
 import edu.cmu.sphinx.frontend.util.Microphone;
 import edu.cmu.sphinx.recognizer.Recognizer;
+import edu.cmu.sphinx.result.ConfidenceResult;
+import edu.cmu.sphinx.result.ConfidenceScorer;
+import edu.cmu.sphinx.result.Path;
 import edu.cmu.sphinx.result.Result;
+import edu.cmu.sphinx.result.WordResult;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
 
 
@@ -56,16 +60,17 @@ public class SpeechRecognizer {
 		microphone.startRecording();
 		
         Result result = recognizer.recognize();
+        
         microphone.stopRecording();
         
-        String ret = "";
+        /*String ret = "";
         
         if(!result.getBestResultNoFiller().isEmpty())
-        {
+        {	
         	ret = result.getBestResultNoFiller();
-        }
+        }*/
         
-        return ret;
+        return result.getBestFinalResultNoFiller();
 	}
 	
     public ArrayList<String> transcribeAudio(String filename)
@@ -115,6 +120,11 @@ public class SpeechRecognizer {
 		/*SpeechRecognizer recognizer = new SpeechRecognizer("transcriber_grammar_ina.xml");
 		recognizer.transcribeAudio("jadwal kereta dari bogor ke depok.wav");
 		recognizer.transcribeAudio("skenario_rute.wav");*/
+		
+		/*SpeechRecognizer recognizer = new SpeechRecognizer(true);
+		recognizer.transcribeAudio("audio/kiki/kiki_part_1.wav");
+		System.out.println("----------------------------------------------");*/
+		//recognizer.transcribeAudio("audio/mahdi/mahdi_part_2.wav");
 	}
 
 }

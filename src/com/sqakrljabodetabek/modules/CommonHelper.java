@@ -77,6 +77,30 @@ public class CommonHelper {
 		}
 	}
 	
+	public static void writeToFileAbsolutePath(String content, String absolute_path)
+	{
+		try {
+			
+			String current_path = absolute_path;
+			File file = new File(current_path);
+ 
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+ 
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(content);
+			bw.close();
+ 
+			System.out.println("Done");
+ 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String args[])
 	{
 		CommonHelper.writeToFile("Yuhu!", "/com/sqakrljabodetabek/map", "test.txt");

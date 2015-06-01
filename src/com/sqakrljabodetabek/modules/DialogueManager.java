@@ -29,9 +29,6 @@ public class DialogueManager {
 	private final String PLACE_IDENTIFIER_DESTINATION_KEY = "ke";
 	private final String EXIST_ROUTE_IDENTIFIER_KEY = "exist_route_identifier";
 	
-	private final String START_STATION_FRAME_IDENTIFIER = "dari";
-	private final String END_STATION_FRAME_IDENTIFIER = "ke";
-	
 	private final String TIME_NEXT_VALUE_IDENTIFIER = "berikutnya";
 	private final String TIME_MOST_EARLY_VALUE_IDENTIFIER = "paling_awal";
 	private final String TIME_MOST_LATE_VALUE_IDENTIFIER = "paling_akhir";
@@ -42,6 +39,7 @@ public class DialogueManager {
 	private LanguageUnderstanding languageUnderstanding;
 	private RouteResolver routeResolver;
 	private ScheduleResolver scheduleResolver;
+	private SpeechSynthesizer speechSynthesizer;
 	
 	private final String RESOURCE_PATH = "/com/sqakrljabodetabek/scenario_files/";
 	
@@ -89,7 +87,7 @@ public class DialogueManager {
 		String context_frame_category = getContextFrameCategory();
 		
 		String start_station;
-		String end_station = context_frame.getValue(END_STATION_FRAME_IDENTIFIER);
+		String end_station = context_frame.getValue(PLACE_IDENTIFIER_DESTINATION_KEY);
 		
 		String ret = "";
 		
@@ -131,7 +129,7 @@ public class DialogueManager {
 		}
 		else
 		{
-			start_station = context_frame.getValue(START_STATION_FRAME_IDENTIFIER);
+			start_station = context_frame.getValue(PLACE_IDENTIFIER_ORIGIN_KEY);
 			
 			if(context_frame_category.equals(TIME_ASKING_CATEGORY))
 			{
@@ -169,6 +167,7 @@ public class DialogueManager {
 					if(routeResolver.isDestinationAvailable(end_station))
 					{
 						ret = "Ada rute dari " + start_station + " ke " + end_station + ". " + ret;
+						EXIST_ROUTE_COMPLETE_FLAG = false;
 					}
 				}
 			}
@@ -221,6 +220,7 @@ public class DialogueManager {
 		languageUnderstanding = new LanguageUnderstanding();
 		routeResolver = new RouteResolver();
 		scheduleResolver = new ScheduleResolver();
+		speechSynthesizer = new SpeechSynthesizer();
 	}
 	
 	private void initModules(boolean isTranscribeAudioFile)
@@ -228,7 +228,8 @@ public class DialogueManager {
 		speechRecognizer = new SpeechRecognizer(isTranscribeAudioFile); //ini untuk transcribe audio file
 		languageUnderstanding = new LanguageUnderstanding();
 		routeResolver = new RouteResolver();
-		scheduleResolver = new ScheduleResolver();		
+		scheduleResolver = new ScheduleResolver();
+		speechSynthesizer = new SpeechSynthesizer();
 	}
 	
 	private void constructReferenceFrames()
@@ -262,10 +263,41 @@ public class DialogueManager {
 			context_frame = getMostAppropriateFrameTemplate(frame);
 		}
 		
+		/* 
+		 * that's right, alasan kenapa ini dipisah
+		 * biar setelah inisialisasi si sistemnya ngisi informasinya
+		 */
 		if(context_frame != null)
 		{
+			if(!isContextFrameStillRelevant(frame))
+			{
+				destroyContextFrame();
+				context_frame = getMostAppropriateFrameTemplate(frame);
+			}
+			
 			fillInformationToContextFrame(frame);
 		}
+		
+		System.out.println("Current context_frame: " + context_frame.toString());
+	}
+	
+	private boolean isContextFrameStillRelevant(Frame frame)
+	{
+		/*
+		 * dia akan ngecek dulu current context_frame relevan atau nggak
+		 */
+		
+		boolean ret = false;
+		
+		if(!getFrameCategory(frame).equals(getContextFrameCategory()))
+		{
+			if(getFrameCategory(frame).equals(ROUTE_ASKING_CATEGORY))
+			{
+				ret = true;
+			}
+		}
+		
+		return ret;
 	}
 	
 	private Frame getMostAppropriateFrameTemplate(Frame frame) 
@@ -300,7 +332,12 @@ public class DialogueManager {
 	
 	private String getContextFrameCategory()
 	{
-		ArrayList<String> keys = context_frame.getKeys();
+		return getFrameCategory(context_frame);
+	}
+	
+	private String getFrameCategory(Frame frame)
+	{
+		ArrayList<String> keys = frame.getKeys();
 		String ret;
 		
 		if(keys.contains(EXIST_ROUTE_IDENTIFIER_KEY))
@@ -439,6 +476,8 @@ public class DialogueManager {
 			}
 		}
 		
+		speechSynthesizer.say(ret);
+		
 		return ret;
 	}
 
@@ -501,7 +540,7 @@ public class DialogueManager {
 		/*	UNTUK MIKROFON dan SKENARIO */
 			DialogueManager dm = new DialogueManager(false);
 			//dm.run();
-			dm.runScenario("skenario_exist_rute_jadwal");
+			dm.runScenario("skenario_rute");
 			//dm.runScenarioFromInput();
 		
 		/* UNTUK FILE AUDIO
