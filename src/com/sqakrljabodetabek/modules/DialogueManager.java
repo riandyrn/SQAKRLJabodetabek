@@ -28,6 +28,7 @@ public class DialogueManager {
 	private final String PLACE_IDENTIFIER_ORIGIN_KEY = "dari";
 	private final String PLACE_IDENTIFIER_DESTINATION_KEY = "ke";
 	private final String EXIST_ROUTE_IDENTIFIER_KEY = "exist_route_identifier";
+	private final String PLACE_KEY = "place"; //ini untuk kasus spesial
 	
 	private final String TIME_NEXT_VALUE_IDENTIFIER = "berikutnya";
 	private final String TIME_MOST_EARLY_VALUE_IDENTIFIER = "paling_awal";
@@ -44,6 +45,8 @@ public class DialogueManager {
 	private final String RESOURCE_PATH = "/com/sqakrljabodetabek/scenario_files/";
 	
 	private boolean EXIST_ROUTE_COMPLETE_FLAG = false;
+	
+	private Frame previousRoute;
 
 	public DialogueManager()
 	{
@@ -172,6 +175,7 @@ public class DialogueManager {
 				}
 			}
 			
+			fillPreviousRoute(start_station, end_station);
 			destroyContextFrame();
 		}
 		
@@ -179,7 +183,19 @@ public class DialogueManager {
 		
 		//destroyContextFrame();
 	}
-
+	
+	private void fillPreviousRoute(String start_station, String end_station)
+	{
+		previousRoute = new Frame();
+		previousRoute.add(new Slot(PLACE_IDENTIFIER_ORIGIN_KEY, start_station));
+		previousRoute.add(new Slot(PLACE_IDENTIFIER_DESTINATION_KEY, end_station));
+	}
+	
+	private void destroyPreviousRoute()
+	{
+		previousRoute = null;
+	}
+	
 	private void welcomingUser()
 	{
 		cls();
@@ -276,24 +292,61 @@ public class DialogueManager {
 			}
 			
 			fillInformationToContextFrame(frame);
+			
+			// ini kalo user nanya pertanyaan ellipsis
+			
+			/*
+			 * Contoh skenario ellipsis:
+			 * ada rute dari bogor ke klender?
+			 * jam berapa kereta selanjutnya berangkat?
+			 */
+			if(isContextFrameEllipsis())
+			{
+				if(previousRoute != null)
+				{
+					fillInformationToContextFrame(previousRoute);
+					destroyPreviousRoute();
+				}
+			}
+			
+			System.out.println("Current context_frame: " + context_frame.toString());
 		}
-		
-		System.out.println("Current context_frame: " + context_frame.toString());
 	}
 	
+	private boolean isContextFrameEllipsis() 
+	{
+		/*
+		 * Kondisinya ellipsis kalo di context frame yang udah
+		 * diisi frame dan punya slot dari dan ke, cuma keduanya 
+		 * masih kosong
+		 */
+		boolean ret = false;
+		
+		if(context_frame.hasKey(PLACE_IDENTIFIER_DESTINATION_KEY) && context_frame.hasKey(PLACE_IDENTIFIER_ORIGIN_KEY))
+		{
+			if(context_frame.getValue(PLACE_IDENTIFIER_DESTINATION_KEY).isEmpty() && context_frame.getValue(PLACE_IDENTIFIER_ORIGIN_KEY).isEmpty())
+			{
+				ret = true;
+			}
+		}
+		
+		return ret;
+	}
+
 	private boolean isContextFrameStillRelevant(Frame frame)
 	{
 		/*
-		 * dia akan ngecek dulu current context_frame relevan atau nggak
+		 * dia akan ngecek dulu current context_frame 
+		 * masih relevan atau nggak
 		 */
 		
-		boolean ret = false;
+		boolean ret = true;
 		
 		if(!getFrameCategory(frame).equals(getContextFrameCategory()))
 		{
-			if(getFrameCategory(frame).equals(ROUTE_ASKING_CATEGORY))
+			if(!getFrameCategory(frame).equals(ROUTE_ASKING_CATEGORY))
 			{
-				ret = true;
+				ret = false;
 			}
 		}
 		
@@ -360,13 +413,64 @@ public class DialogueManager {
 		return ret;
 	}
 
-	private void fillInformationToContextFrame(Frame frame) {
+	private void fillInformationToContextFrame(Frame frame) 
+	{
 		
-		for(Slot slot:frame.getContent())
+		ArrayList<Slot> slots = frame.getContent();
+		int slot_size = slots.size();
+		
+		if(slot_size == 1 && slots.get(0).getKey().equals(PLACE_KEY))
 		{
-			context_frame.setValue(slot);
+			/*
+			 * Ini untuk kasus frame only
+			 * place --> kasus khusus yang cm tempat aja
+			 */
+			String slot_key = getEmptyPlaceSlotNameInContextFrame();
+			if(!slot_key.isEmpty())
+			{
+				context_frame.setValue(slot_key, slots.get(0).getValue());
+			}
+		}
+		else
+		{
+			/*
+			 * Ini untuk kasus frame selain frame
+			 * only place --> kasus normal
+			 */
+			for(int i = 0; i < slot_size; i++)
+			{
+				context_frame.setValue(slots.get(i));
+			}
 		}
 		
+	}
+
+	private String getEmptyPlaceSlotNameInContextFrame() 
+	{
+		/*
+		 * Melakukan scanning terhadap slot yang punya
+		 * value <place> yang masing kosong di
+		 * context frame
+		 * 
+		 * slot yang punya value <place> cuma dimiliki
+		 * place identifier
+		 */
+		
+		String ret = "";
+		
+		for(Slot slot:context_frame.getContent())
+		{
+			if(slot.getKey().equals(PLACE_IDENTIFIER_ORIGIN_KEY) || slot.getKey().equals(PLACE_IDENTIFIER_DESTINATION_KEY))
+			{
+				if(slot.getValue().isEmpty())
+				{
+					ret = slot.getKey();
+					return ret;
+				}
+			}
+		}
+		
+		return ret;
 	}
 
 	public void destroyContextFrame()
@@ -539,8 +643,10 @@ public class DialogueManager {
 	{
 		/*	UNTUK MIKROFON dan SKENARIO */
 			DialogueManager dm = new DialogueManager(false);
+			System.out.println(dm.executeDMBehavior("rute dari jakarta_kota ke bogor"));
+			System.out.println(dm.executeDMBehavior("ada_kereta"));
 			//dm.run();
-			dm.runScenario("skenario_rute");
+			//dm.runScenario("skenario_rute");
 			//dm.runScenarioFromInput();
 		
 		/* UNTUK FILE AUDIO

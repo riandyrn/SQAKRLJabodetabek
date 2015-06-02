@@ -109,6 +109,11 @@ public class Frame {
 		return ret;
 	}
 	
+	public boolean hasKey(String key)
+	{
+		return getKeys().contains(key);
+	}
+	
 	public static void printFrame(Frame frame)
 	{
 		if(frame != null)

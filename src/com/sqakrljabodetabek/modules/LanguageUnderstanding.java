@@ -22,12 +22,13 @@ public class LanguageUnderstanding {
 	private ArrayList<String> place_identifiers;
 	
 	private ArrayList<String> place_identifiers_relations;
-	private ArrayList<String> identifier_aliases;
+	private ArrayList<String> synonims;
 	
 	private final String TIME_MODIFIER = "time_modifier";
 	private final String PLACE_IDENTIFIER = "place_identifier";
 	private final String LIST_JADWAL_IDENTIFIER = "list_jadwal_identifier";
 	private final String EXIST_ROUTE_IDENTIFIER = "exist_route_identifier";
+	private final String PLACE = "place";
 	
 	private ArrayList<String> keywords;
 	
@@ -51,7 +52,7 @@ public class LanguageUnderstanding {
 		ArrayList<Integer> consecutive_mapping = analysis.getConsecutiveMapping();
 		String[] tokens = analysis.getTokens();
 		Frame ret = new Frame();
-		
+					
 		// construct from mapping
 		for(String[] row: mapping)
 		{
@@ -61,14 +62,17 @@ public class LanguageUnderstanding {
 			{
 				int index = Integer.valueOf(row[1]);
 				String place = getPlace(tokens, index);
-				Slot slot = new Slot(resolveKeywordAlias(row[0]), place);
+				Slot slot = new Slot(resolveSynonim(row[0]), place);
 				ret.add(slot);
 				
 				if(index - 1 >= 0)
 				{
+					/*
+					 * Ini tu untuk menangani kasus kayak: "Jakarta Kota ke bogor", "Bogor dari Klender"
+					 */
 					if(isWordPlace(tokens[index - 1]))
 					{
-						Slot guessed_slot = new Slot(getProperKeywordPlaceIdentifierForKeyword(row[0]), tokens[index-1]);
+						Slot guessed_slot = new Slot(getProperKeywordPlaceIdentifierForKeyword(resolveSynonim(row[0])), tokens[index-1]);
 						if(!isSlotAlreadyExistOnFrame(ret, guessed_slot))
 						{
 							ret.add(guessed_slot);
@@ -76,19 +80,18 @@ public class LanguageUnderstanding {
 					}
 				}
 			}
-			else if(keyword_category.equals(TIME_MODIFIER))
+			else if(keyword_category.equals(TIME_MODIFIER) || keyword_category.equals(LIST_JADWAL_IDENTIFIER) || keyword_category.equals(EXIST_ROUTE_IDENTIFIER))
 			{
-				Slot slot = new Slot(TIME_MODIFIER, resolveKeywordAlias(row[0]));
+				Slot slot = new Slot(keyword_category, resolveSynonim(row[0]));
 				ret.add(slot);
 			}
-			else if(keyword_category.equals(LIST_JADWAL_IDENTIFIER))
+			else if(keyword_category.equals(PLACE) && mapping.size() == 1)
 			{
-				Slot slot = new Slot(LIST_JADWAL_IDENTIFIER, row[0]);
-				ret.add(slot);
-			}
-			else if(keyword_category.equals(EXIST_ROUTE_IDENTIFIER))
-			{
-				Slot slot = new Slot(EXIST_ROUTE_IDENTIFIER, row[0]);
+				/*
+				 * Ini untuk menangani kasus special yang hanya
+				 * menyebutkan nama tempat saja
+				 */
+				Slot slot = new Slot(PLACE, row[0]);
 				ret.add(slot);
 			}
 		}
@@ -108,11 +111,11 @@ public class LanguageUnderstanding {
 		return ret;
 	}
 	
-	private String resolveKeywordAlias(String keyword) 
+	private String resolveSynonim(String keyword) 
 	{
 		String ret = keyword;
 		
-		for(String row: identifier_aliases)
+		for(String row: synonims)
 		{
 			String[] tokens = row.split("\\s");
 			if(tokens[0].equals(keyword))
@@ -214,6 +217,10 @@ public class LanguageUnderstanding {
 		{
 			ret = EXIST_ROUTE_IDENTIFIER;
 		}
+		else if(places.contains(keyword))
+		{
+			ret = PLACE;
+		}
 		
 		return ret;
 	}
@@ -257,6 +264,7 @@ public class LanguageUnderstanding {
 		keywords.addAll(exist_route_identifiers);
 		keywords.addAll(list_jadwal_identifiers);
 		keywords.addAll(time_modifiers);
+		keywords.addAll(places);
 	}
 	
 	private void loadFiles()
@@ -267,7 +275,7 @@ public class LanguageUnderstanding {
 		list_jadwal_identifiers = loadTextFile("list_jadwal_identifiers");
 		place_identifiers = loadTextFile("place_identifiers");
 		place_identifiers_relations = loadTextFile("place_identifiers_relations");
-		identifier_aliases = loadTextFile("identifier_aliases");
+		synonims = loadTextFile("synonims");
 	}
 	
 	private ArrayList<String> loadTextFile(String filename)
@@ -299,7 +307,8 @@ public class LanguageUnderstanding {
 	{
 		LanguageUnderstanding lu = new LanguageUnderstanding();
 		//lu.testDrive("default_pertanyaan.txt");
-		printArrayList(lu.keywords);
+		//printArrayList(lu.keywords);
+		System.out.println(lu.getFrame("stasiun jakarta_kota dari stasiun bogor").toString());
 	}
 	
 }
