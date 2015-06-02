@@ -578,9 +578,9 @@ public class DialogueManager {
 			{
 				ret = AnswerGenerator.handleNullContextFrame();
 			}
+			
+			speechSynthesizer.say(ret);
 		}
-		
-		speechSynthesizer.say(ret);
 		
 		return ret;
 	}

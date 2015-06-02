@@ -129,7 +129,7 @@ public class AnswerGenerator {
 			ArrayList<String> schedules = new ArrayList<>();
 			
 			StringBuilder str = new StringBuilder();
-			str.append("Jadwal dari " + start + " menuju " + end + "\n");
+			str.append("Jadwal dari " + start + " menuju " + end + " dapat dilihat pada visualisasi");
 			for(SQLRow row: rows.getContent())
 			{
 				if(!row.isEmpty())
@@ -138,7 +138,7 @@ public class AnswerGenerator {
 					{
 						String time = row.getValue(departure_col);
 						time = time.substring(0, time.length() - 3);
-						str.append(time + "\n");
+						//str.append(time + "\n");
 						schedules.add(time);
 					}
 				}
